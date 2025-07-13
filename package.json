@@ -6,7 +6,7 @@
   "workspaces": [
     "worker",
     "packages/*",
-    "apps/*"
+    "web"
   ],
   "scripts": {
     "dev": "turbo run dev",

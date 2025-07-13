@@ -26,7 +26,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@prisma/client": ["packages/database/node_modules/.prisma/client"]
+    }
   },
   "include": ["worker/**/*", "packages/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

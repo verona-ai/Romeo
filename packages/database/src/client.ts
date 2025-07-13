@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import type { Customer, MastraMessage, MastraThread } from ".prisma/client";
+import { PrismaClient } from ".prisma/client";
 
 declare global {
   var __prisma: PrismaClient | undefined;
@@ -30,3 +31,5 @@ export async function connectDatabase() {
 export async function disconnectDatabase() {
   await prisma.$disconnect();
 }
+
+export type { Customer, MastraMessage, MastraThread };

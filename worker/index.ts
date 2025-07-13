@@ -32,7 +32,7 @@ fastify.get("/api/health", async (request, reply) => {
 // Start server
 const start = async () => {
   try {
-    const port = parseInt(process.env.PORT || "3000");
+    const port = parseInt(process.env.PORT || "3030");
     await fastify.listen({ port, host: "0.0.0.0" });
     console.log(`🚀 Romeo API server running on port ${port}`);
   } catch (err) {
