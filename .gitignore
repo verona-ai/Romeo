@@ -1,7 +1,29 @@
+# Node modules for all packages
 node_modules
-# Keep environment variables out of version control
+
+# Environment variables
 .env
+.env.*
 
+# Build output for all packages
 dist
+worker/dist
+packages/*/dist
+apps/*/dist
 
+# Prisma generated files
 /src/generated/prisma
+worker/src/generated/prisma
+packages/database/prisma/generated
+prisma/generated
+
+# Turborepo build cache and logs
+.turbo
+
+# IDE/editor files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db

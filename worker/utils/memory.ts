@@ -17,7 +17,8 @@ export function initializeMemory(): Memory {
     const postgresStore = new PostgresStore({
       connectionString:
         process.env.DATABASE_URL ||
-        "postgresql://romeo:romeo_password@localhost:5432/romeo"
+        "postgresql://romeo:romeo_password@localhost:5432/romeo",
+      schemaName: "mastra"
     });
 
     memory = new Memory({

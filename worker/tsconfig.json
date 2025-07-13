@@ -28,6 +28,6 @@
     "exactOptionalPropertyTypes": true,
     "types": ["node"]
   },
-  "include": ["worker/**/*", "packages/**/*"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
