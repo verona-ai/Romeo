@@ -3,100 +3,18 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
-  previewFeatures = ["multiSchema"]
+  output   = "../../../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["mastra", "public"]
 }
 
 // ========================================
-// MASTRA SCHEMA (Introspected)
-// These models represent Mastra's existing tables
-// ========================================
-
-model MastraMessage {
-  id         String   @id
-  thread_id  String
-  content    String
-  role       String
-  type       String
-  createdAt  DateTime @db.Timestamp(6)
-  resourceId String?
-
-  // Relations
-  thread     MastraThread @relation(fields: [thread_id], references: [id], onDelete: Cascade)
-
-  @@schema("mastra")
-  @@map("mastra_messages")
-}
-
-model MastraThread {
-  id         String   @id
-  resourceId String
-  title      String
-  metadata   String?
-  createdAt  DateTime @db.Timestamp(6)
-  updatedAt  DateTime @db.Timestamp(6)
-
-  // Relations
-  messages   MastraMessage[]
-  customer   Customer @relation(fields: [resourceId], references: [id], onDelete: Cascade)
-
-  @@schema("mastra")
-  @@map("mastra_threads")
-}
-
-model MastraResource {
-  id            String   @id
-  workingMemory String?
-  metadata      Json?
-  createdAt     DateTime @db.Timestamp(6)
-  updatedAt     DateTime @db.Timestamp(6)
-
-  @@schema("mastra")
-  @@map("mastra_resources")
-}
-
-model MastraTrace {
-  id           String   @id
-  parentSpanId String?
-  name         String
-  traceId      String
-  scope        String
-  kind         Int
-  attributes   Json?
-  status       Json?
-  events       Json?
-  links        Json?
-  other        String?
-  startTime    BigInt
-  endTime      BigInt
-  createdAt    DateTime @db.Timestamp(6)
-
-  @@schema("mastra")
-  @@map("mastra_traces")
-}
-
-model MastraWorkflowSnapshot {
-  workflow_name String
-  run_id        String
-  resourceId    String?
-  snapshot      String
-  createdAt     DateTime @db.Timestamp(6)
-  updatedAt     DateTime @db.Timestamp(6)
-
-  @@unique([workflow_name, run_id])
-  @@schema("mastra")
-  @@map("mastra_workflow_snapshot")
-}
-
-// ========================================
-// ROMEO BUSINESS MODELS (Public Schema)
-// Only business-specific data not covered by Mastra
+// ROMEO BUSINESS MODELS
+// Only business-specific data managed by Prisma
+// Mastra will manage its own tables independently
 // ========================================
 
 model Customer {
@@ -109,10 +27,6 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
-  threads   MastraThread[]
-
-  @@schema("public")
   @@index([email])
   @@index([status])
 }
@@ -125,6 +39,4 @@ enum CustomerStatus {
   ACTIVE
   INACTIVE
   SUSPENDED
-
-  @@schema("public")
 } 

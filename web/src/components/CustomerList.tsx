@@ -8,79 +8,83 @@ import {
 } from "@/components/ui/card";
 import {
   prisma,
-  type Customer,
-  type MastraMessage,
-  type MastraThread
+  type Customer
 } from "../../../packages/database/src/client";
 
-type CustomerWithThreads = Customer & {
-  threads: (MastraThread & { messages: MastraMessage[] })[];
-};
-
 export default async function CustomerList() {
-  const customers: CustomerWithThreads[] = await prisma.customer.findMany({
-    include: {
-      threads: {
-        include: {
-          messages: true
-        }
-      }
-    },
+  const customers: Customer[] = await prisma.customer.findMany({
     orderBy: {
       createdAt: "desc"
     }
   });
 
-  if (customers.length === 0) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground">
-          No customers found. Create your first customer to get started.
-        </p>
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Customer Dashboard</h1>
+        <Badge variant="outline">
+          {customers.length} customer{customers.length !== 1 ? "s" : ""}
+        </Badge>
       </div>
-    );
-  }
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {customers.map((customer) => (
+          <CustomerCard key={customer.id} customer={customer} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CustomerCard({ customer }: { customer: Customer }) {
+  const statusColor = {
+    ACTIVE: "bg-green-100 text-green-800",
+    INACTIVE: "bg-gray-100 text-gray-800", 
+    SUSPENDED: "bg-red-100 text-red-800"
+  }[customer.status];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {customers.map((customer) => (
-        <Card key={customer.id}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">{customer.name}</CardTitle>
-              <Badge
-                variant={customer.status === "ACTIVE" ? "default" : "secondary"}
-              >
-                {customer.status}
-              </Badge>
+    <Card>
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">{customer.name}</CardTitle>
+          <Badge className={statusColor}>
+            {customer.status}
+          </Badge>
+        </div>
+        <CardDescription>
+          {customer.email}
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="pt-0">
+        <div className="space-y-2">
+          {customer.phone && (
+            <p className="text-sm text-muted-foreground">
+              📞 {customer.phone}
+            </p>
+          )}
+          
+          <p className="text-xs text-muted-foreground">
+            Created: {new Date(customer.createdAt).toLocaleDateString()}
+          </p>
+          
+          {customer.metadata && (
+            <div className="text-xs text-muted-foreground">
+              <span className="font-medium">Metadata:</span>
+              <pre className="mt-1 text-xs">
+                {JSON.stringify(customer.metadata, null, 2)}
+              </pre>
             </div>
-            <CardDescription>{customer.email}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>Conversations:</span>
-                <span className="font-medium">{customer.threads.length}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span>Total Messages:</span>
-                <span className="font-medium">
-                  {customer.threads.reduce(
-                    (
-                      total: number,
-                      thread: MastraThread & { messages: MastraMessage[] }
-                    ) => total + thread.messages.length,
-                    0
-                  )}
-                </span>
-              </div>
-              <div className="text-xs text-muted-foreground">
-                Joined {new Date(customer.createdAt).toLocaleDateString()}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+          )}
+        </div>
+
+        <div className="mt-4 pt-2 border-t">
+          <p className="text-xs text-muted-foreground">
+            💬 Conversation history managed by Romeo AI Agent
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

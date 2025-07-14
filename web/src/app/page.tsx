@@ -11,7 +11,6 @@ import { Suspense } from "react";
 
 export default async function DashboardPage() {
   const customerCount = await prisma.customer.count();
-  const threadCount = await prisma.mastraThread.count();
 
   return (
     <div className="container mx-auto p-6">
@@ -36,11 +35,12 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Active Conversations
+              Romeo Agent Status
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{threadCount}</div>
+            <div className="text-sm font-medium text-green-600">🤖 Active</div>
+            <div className="text-xs text-muted-foreground">AI Agent Running</div>
           </CardContent>
         </Card>
       </div>
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
         <CardHeader>
           <CardTitle>Customers</CardTitle>
           <CardDescription>
-            Manage your customer base and view conversation history
+            Manage your customer base - conversation history is handled by the Romeo AI agent
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,4 +1,4 @@
-import type { Customer, MastraMessage, MastraThread } from ".prisma/client";
+import type { Customer } from ".prisma/client";
 import { PrismaClient } from ".prisma/client";
 
 declare global {
@@ -32,4 +32,4 @@ export async function disconnectDatabase() {
   await prisma.$disconnect();
 }
 
-export type { Customer, MastraMessage, MastraThread };
+export type { Customer };

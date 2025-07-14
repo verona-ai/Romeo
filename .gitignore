@@ -4,6 +4,7 @@ node_modules
 # Environment variables
 .env
 .env.*
+docker.env
 
 # Build output for all packages
 dist

@@ -2,7 +2,7 @@ import { openai } from "@ai-sdk/openai";
 import { Agent } from "@mastra/core/agent";
 import { initializeMemory } from "./utils/memory.js";
 
-// Initialize memory system
+// Initialize memory system (may return null if initialization fails)
 const memory = initializeMemory();
 
 // Customer service agent instructions
@@ -26,12 +26,21 @@ Remember: You represent the company, so always maintain high standards of custom
 `;
 
 // Create the Romeo customer service agent
-export const romeoAgent = new Agent({
+const agentConfig: any = {
   name: "Romeo",
   instructions: CUSTOMER_SERVICE_INSTRUCTIONS,
-  model: openai(process.env.OPENAI_MODEL || "gpt-4o-mini"),
-  memory // Attach the PostgreSQL memory system
-});
+  model: openai(process.env.OPENAI_MODEL || "gpt-4o-mini")
+};
+
+// Only add memory if it's available
+if (memory) {
+  agentConfig.memory = memory;
+  console.log("✅ Agent created with persistent memory");
+} else {
+  console.log("⚠️ Agent created without persistent memory - conversations will not be saved");
+}
+
+export const romeoAgent = new Agent(agentConfig);
 
 // Function to generate AI response using the agent
 export async function generateResponse(
