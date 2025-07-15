@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")  
   directUrl = env("DIRECT_URL")
 }
 
@@ -66,6 +66,82 @@ model Message {
   @@index([conversationId])
   @@index([createdAt])
 }
+
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model mastra_evals {
+  input         String
+  output        String
+  result        Json
+  agent_name    String
+  metric_name   String
+  instructions  String
+  test_info     Json?
+  global_run_id String
+  run_id        String
+  created_at    DateTime  @db.Timestamp(6)
+  createdAt     DateTime? @db.Timestamp(6)
+
+  @@ignore
+}
+
+model mastra_messages {
+  id         String   @id
+  thread_id  String
+  content    String
+  role       String
+  type       String
+  createdAt  DateTime @db.Timestamp(6)
+  resourceId String?
+
+}
+
+model mastra_resources {
+  id            String   @id
+  workingMemory String?
+  metadata      Json?
+  createdAt     DateTime @db.Timestamp(6)
+  updatedAt     DateTime @db.Timestamp(6)
+}
+
+model mastra_threads {
+  id         String   @id
+  resourceId String
+  title      String
+  metadata   String?
+  createdAt  DateTime @db.Timestamp(6)
+  updatedAt  DateTime @db.Timestamp(6)
+
+}
+
+model mastra_traces {
+  id           String   @id
+  parentSpanId String?
+  name         String
+  traceId      String
+  scope        String
+  kind         Int
+  attributes   Json?
+  status       Json?
+  events       Json?
+  links        Json?
+  other        String?
+  startTime    BigInt
+  endTime      BigInt
+  createdAt    DateTime @db.Timestamp(6)
+}
+
+model mastra_workflow_snapshot {
+  workflow_name String
+  run_id        String
+  resourceId    String?
+  snapshot      String
+  createdAt     DateTime @db.Timestamp(6)
+  updatedAt     DateTime @db.Timestamp(6)
+
+  @@unique([workflow_name, run_id])
+}
+
 
 // ========================================
 // ENUMS

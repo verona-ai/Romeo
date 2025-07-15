@@ -3,21 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:generate": "cd .. && prisma generate --schema=packages/database/prisma/schema.prisma",
+    "db:push": "cd .. && prisma db push --schema=packages/database/prisma/schema.prisma",
+    "db:studio": "cd .. && prisma studio --schema=packages/database/prisma/schema.prisma"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "next": "15.3.5",
-    "@prisma/client": "^5.22.0",
-    "@supabase/supabase-js": "^2.39.0",
-    "@supabase/ssr": "^0.1.0",
+    "@romeo/database": "workspace:*",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "openai": "^4.28.0",

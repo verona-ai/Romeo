@@ -6,18 +6,20 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
-    "db:seed": "tsx src/seed.ts"
+    "db:generate": "cd ../.. && prisma generate --schema=packages/database/prisma/schema.prisma",
+    "db:push": "cd ../.. && prisma db push --schema=packages/database/prisma/schema.prisma",
+    "db:migrate": "cd ../.. && prisma migrate dev --schema=packages/database/prisma/schema.prisma",
+    "db:studio": "cd ../.. && prisma studio --schema=packages/database/prisma/schema.prisma",
+    "db:seed": "cd ../.. && tsx packages/database/src/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
-    "prisma": "^5.0.0",
+    "@prisma/client": "^6.11.1",
+    "prisma": "^6.11.1",
     "@mastra/memory": "^0.11.2",
     "@mastra/pg": "^0.12.2",
-    "dotenv": "^17.2.0"
+    "dotenv": "^17.2.0",
+    "@supabase/supabase-js": "^2.46.1",
+    "@supabase/ssr": "^0.6.1"
   },
   "devDependencies": {
     "@types/node": "^24.0.13",

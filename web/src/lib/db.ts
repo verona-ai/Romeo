@@ -1,11 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { db, prisma, supabase, createSupabaseClient, createSupabaseServerClient } from '@romeo/database'
 
-// Global is used here to maintain a single instance of Prisma Client
-// across hot reloads in development
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
+// Re-export the unified database client and utilities
+export { db, prisma, supabase, createSupabaseClient, createSupabaseServerClient }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Re-export types
+export type { Customer, Conversation, Message, SupabaseClient } from '@romeo/database'
