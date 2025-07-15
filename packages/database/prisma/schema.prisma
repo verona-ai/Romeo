@@ -9,12 +9,13 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ========================================
 // ROMEO BUSINESS MODELS
-// Only business-specific data managed by Prisma
-// Mastra will manage its own tables independently
+// Business-specific data managed by Prisma
+// Supabase Auth will handle user authentication
 // ========================================
 
 model Customer {
@@ -26,9 +27,44 @@ model Customer {
   metadata  Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // Relationships
+  conversations Conversation[]
 
   @@index([email])
   @@index([status])
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  customerId  String
+  title       String?
+  status      ConversationStatus @default(ACTIVE)
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  messages    Message[]
+  
+  @@index([customerId])
+  @@index([status])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  content        String
+  role           MessageRole
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  
+  // Relationships
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  @@index([conversationId])
+  @@index([createdAt])
 }
 
 // ========================================
@@ -39,4 +75,16 @@ enum CustomerStatus {
   ACTIVE
   INACTIVE
   SUSPENDED
+}
+
+enum ConversationStatus {
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
 } 

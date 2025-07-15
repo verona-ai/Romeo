@@ -1,368 +1,287 @@
 # Romeo 🤖
 
-### Open-Source Self-Hostable TypeScript AI Agent for Customer Service
+### Modern TypeScript AI Customer Service Platform
 
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/)
-[![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://prisma.io/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![SST](https://img.shields.io/badge/SST-f55650?style=for-the-badge&logo=sst&logoColor=white)](https://sst.dev/)
 
-Romeo is a production-ready, open-source customer service AI platform that you can deploy anywhere. Built with TypeScript, powered by [Mastra](https://mastra.ai/), and designed for enterprise-grade reliability, Romeo provides intelligent customer support with full control over your data.
+Romeo is a production-ready AI customer service platform built with the **modern simple stack** - proving that you don't need Docker/Kubernetes complexity to build serious software.
 
 ---
 
-## ✨ Why Romeo?
+## 🚀 The Modern Simple Stack
 
-- **🔒 Complete Data Control** - Self-host on your infrastructure, keep sensitive customer data private
-- **⚡ Production Ready** - Built for scale with Docker, PostgreSQL, and enterprise-grade architecture  
-- **🧠 Intelligent Memory** - Persistent conversation history and context across customer interactions
-- **📊 Real-time Dashboard** - Monitor agent performance, manage customers, and track interactions
-- **🔧 Framework Agnostic** - Powered by Mastra with support for any LLM provider (OpenAI, Anthropic, etc.)
-- **🚀 One-Click Deploy** - Docker Compose setup gets you running in minutes
+**Frontend & API**: Next.js 15 + API Routes (deployed on Vercel)  
+**Database**: Supabase (PostgreSQL + Auth + Storage)  
+**Backend API**: AWS Lambda via SST (Infrastructure as Code)  
+**AI**: OpenAI GPT-4  
+**ORM**: Prisma  
+**Cost**: $0-50/month for thousands of users  
+
+### This Stack Powers:
+- **Vercel**: Their own billion-dollar product
+- **Linear**: $50M+ valuation  
+- **Hundreds of unicorn startups**
+
+---
+
+## ✨ Why This Approach?
+
+### ❌ The Old Way (Complex)
+```bash
+# Docker, Kubernetes, Terraform, custom networking...
+docker-compose up -d
+kubectl apply -f k8s/
+terraform plan && terraform apply
+# Hours of DevOps setup before writing a single line of business logic
+```
+
+### ✅ The New Way (Simple)
+```bash
+# Just code your features
+pnpm install
+pnpm dev
+# Deploy with one command
+vercel deploy
+sst deploy
+```
+
+### Scale Reality Check:
+- **1-1000 users**: Simple stack handles easily
+- **1000-10000 users**: Same stack, just paying more  
+- **10000+ users**: NOW you might need complex infrastructure (but you have revenue to hire help)
+
+**Complex infrastructure is the RESULT of success, not a prerequisite for it.**
 
 ---
 
 ## 🏗️ Architecture
 
-Romeo is built as a modern monorepo with three core components:
-
 ```mermaid
 graph TB
-    subgraph "Romeo Platform"
-        W[Web Dashboard<br/>Next.js + React]
-        A[AI Worker<br/>Mastra + OpenAI]
-        D[Database<br/>PostgreSQL + Prisma]
+    subgraph "Frontend (Vercel)"
+        W[Next.js 15<br/>React + API Routes]
     end
     
-    subgraph "External"
-        C[Customers]
-        O[OpenAI API]
+    subgraph "Backend (AWS via SST)"
+        A[Lambda Functions<br/>Chat API]
     end
     
-    C --> W
+    subgraph "Database (Supabase)"
+        D[PostgreSQL<br/>Auth + Storage]
+    end
+    
+    subgraph "AI"
+        O[OpenAI GPT-4]
+    end
+    
     W --> A
-    A --> O
     W --> D
     A --> D
+    A --> O
 ```
-
-### Components
-
-- **🌐 Web Dashboard** - Next.js application for customer management and agent monitoring
-- **🤖 AI Worker** - Fastify server running the Romeo customer service agent
-- **📊 Database** - PostgreSQL with Prisma for customer data and conversation history
-- **🔧 Mastra Integration** - Advanced AI framework providing memory, tool calling, and conversation management
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
-- [OpenAI API Key](https://platform.openai.com/api-keys)
-
 ### 1. Clone and Setup
-
 ```bash
 git clone https://github.com/your-org/romeo.git
 cd romeo
-
-# Copy environment template
-cp docker.env.example docker.env
+pnpm install
 ```
 
-### 2. Configure Environment
-
-Edit `docker.env` and add your OpenAI API key:
+### 2. Set up Supabase
+1. Go to [database.new](https://database.new)
+2. Create a new project
+3. Copy your credentials to `web/.env.local`:
 
 ```bash
-# Required: Add your OpenAI API key
-OPENAI_API_KEY=your_openai_api_key_here
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+DATABASE_URL=your_supabase_database_url
 
-# Optional: Customize model (default: gpt-4o-mini)
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
 OPENAI_MODEL=gpt-4o-mini
 ```
 
-### 3. Launch Romeo
-
+### 3. Database Setup
 ```bash
-# Start all services
-docker-compose up -d
-
-# Watch logs
-docker-compose logs -f
+cd packages/database
+pnpm run db:push    # Push schema to Supabase
+pnpm run db:studio  # Open Prisma Studio
 ```
 
-### 4. Access Romeo
+### 4. Start Development
+```bash
+cd web
+pnpm dev
+```
 
-- **Dashboard**: http://localhost:3000
-- **API Worker**: http://localhost:3030
-- **Database**: localhost:5432
+Access at: http://localhost:3000
+
+### 5. Deploy (Optional)
+
+**Frontend (Vercel)**:
+```bash
+vercel deploy
+```
+
+**Backend API (AWS via SST)**:
+```bash
+sst deploy
+```
 
 ---
 
 ## 💡 Features
 
-### 🤖 Intelligent Customer Service Agent
+### 🤖 AI Customer Service
+- **GPT-4 Powered**: Professional, context-aware responses
+- **Conversation Memory**: Persistent chat history
+- **Smart Escalation**: Knows when to involve humans
+- **Multi-Channel**: Web, API, future integrations
 
-Romeo's AI agent is specifically trained for customer service excellence:
+### 📊 Modern Dashboard
+- **Real-time Metrics**: Customer stats, conversation tracking
+- **Beautiful UI**: Tailwind CSS + Radix UI components
+- **Responsive Design**: Works on all devices
+- **Type-Safe**: Full TypeScript coverage
 
-- **Professional Communication** - Maintains helpful, empathetic tone
-- **Context Awareness** - Remembers conversation history and customer details
-- **Problem Resolution** - Trained to understand and solve customer issues
-- **Escalation Management** - Knows when to involve human agents
-
-### 📊 Management Dashboard
-
-Monitor and manage your customer service operations:
-
-- **Customer Database** - Centralized customer information and history
-- **Real-time Monitoring** - Track agent performance and conversation metrics
-- **Conversation History** - Full audit trail of customer interactions
-- **Status Management** - Manage customer status and agent availability
-
-### 🔧 Enterprise Features
-
-Built for production deployment:
-
-- **Scalable Architecture** - Horizontal scaling with multiple worker instances
-- **Persistent Memory** - Conversation context preserved across sessions
-- **Health Monitoring** - Built-in health checks and observability
-- **Security** - Environment-based configuration, secure defaults
-
----
-
-## 📚 Documentation
-
-### Development Guides
-
-- [Development Setup](./DEV_GUIDE.md) - Local development environment
-- [Docker Guide](./DOCKER_PRISMA_GUIDE.md) - Docker and database setup
-- [API Documentation](./worker/README.md) - Worker API reference
-
-### Deployment
-
-Romeo supports multiple deployment options:
-
-| Environment | Guide | Best For |
-|-------------|-------|----------|
-| **Docker Compose** | [Quick Start](#quick-start) | Development, small teams |
-| **Kubernetes** | *Coming Soon* | Production, enterprise |
-| **Cloud Deploy** | *Coming Soon* | Managed hosting |
-
-### Configuration
-
-Romeo is highly configurable through environment variables:
-
-```bash
-# AI Configuration
-OPENAI_API_KEY=your_key_here          # Required
-OPENAI_MODEL=gpt-4o-mini              # Optional, default model
-
-# Database
-DATABASE_URL=postgresql://...         # Auto-configured in Docker
-
-# Worker Service  
-LOG_LEVEL=info                        # info, debug, warn, error
-CORS_ORIGIN=*                         # CORS configuration
-
-# Custom Ports (optional)
-WEB_PORT=3000                         # Dashboard port
-WORKER_PORT=3030                      # API worker port
-POSTGRES_PORT=5432                    # Database port
-```
-
----
-
-## 🔌 Integrations
-
-Romeo is designed to work with your existing infrastructure:
-
-### LLM Providers
-- ✅ **OpenAI** (GPT-4, GPT-3.5-turbo, GPT-4o-mini)
-- 🔄 **Anthropic** (Coming Soon)
-- 🔄 **Google Gemini** (Coming Soon)
-- 🔄 **Azure OpenAI** (Coming Soon)
-
-### Customer Platforms
-- 🔄 **Zendesk Integration** (Planned)
-- 🔄 **Intercom Integration** (Planned)
-- 🔄 **Slack Bot** (Planned)
-- 🔄 **Discord Bot** (Planned)
-
-### Observability
-- 🔄 **Phoenix Integration** (Planned)
-- 🔄 **Langfuse Integration** (Planned)
-- 🔄 **Custom Analytics** (Planned)
+### 🔐 Production Ready
+- **Supabase Auth**: Built-in authentication system
+- **Row-Level Security**: Database-level permissions
+- **Environment Config**: Secure credential management
+- **Health Monitoring**: Built-in health checks
 
 ---
 
 ## 🛠️ Development
 
-### Local Development
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start development servers
-pnpm dev
-
-# Access services:
-# - Web: http://localhost:3000
-# - Worker: http://localhost:3030
-# - Database: localhost:5432
-```
-
 ### Project Structure
-
 ```
 romeo/
-├── web/                    # Next.js dashboard
+├── web/                    # Next.js app
 │   ├── src/app/           # App router pages
 │   ├── src/components/    # React components
-│   └── src/lib/           # Utilities
-├── worker/                 # AI agent service
-│   ├── agent.ts           # Romeo agent definition
-│   ├── routes/            # API routes
-│   └── utils/             # Worker utilities
-├── packages/
-│   └── database/          # Shared database package
-│       └── prisma/        # Database schema
-└── docker-compose.yml     # Docker deployment
+│   ├── src/lib/           # Utilities
+│   └── src/app/api/       # API routes
+├── functions/             # SST Lambda functions
+├── packages/database/     # Shared Prisma schema
+└── sst.config.ts         # AWS infrastructure config
 ```
 
-### Database Schema
+### Key Commands
+```bash
+# Development
+pnpm dev                   # Start Next.js dev server
+pnpm db:studio            # Open database admin
+pnpm db:push              # Push schema changes
 
-Romeo uses a clean, focused database schema:
+# Deployment
+vercel deploy             # Deploy frontend
+sst deploy                # Deploy backend API
 
-```typescript
-model Customer {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  phone     String?
-  status    CustomerStatus @default(ACTIVE)
-  metadata  Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+# Database
+pnpm db:generate          # Generate Prisma client
+pnpm db:push              # Push schema to Supabase
 ```
 
 ---
 
 ## 🌟 Use Cases
 
-### Small Business Customer Support
-Perfect for businesses that need 24/7 customer support without the overhead of a large support team.
+### ✅ Perfect For:
+- **Startups**: Get to market fast without DevOps overhead
+- **SMBs**: Professional customer service without enterprise complexity
+- **Side Projects**: MVP to production in hours, not weeks
+- **Agencies**: Deliver client projects rapidly
 
-### Enterprise Customer Service
-Deploy Romeo as part of your customer service infrastructure with full control over data and customization.
+### 🔄 Easy to Scale:
+- **More Users**: Vercel/Supabase auto-scale
+- **More Features**: Add API routes, database tables
+- **Team Growth**: TypeScript + modern tools = easy onboarding
 
-### Developer Platform Support  
-Use Romeo to handle developer questions, API support, and technical documentation assistance.
+---
 
-### E-commerce Support
-Handle order inquiries, product questions, and customer issues automatically.
+## 🎯 The OSS Philosophy
+
+**Start Simple. Ship Fast. Scale When Needed.**
+
+This project proves that modern "simple" tools are actually premium:
+- **Next.js**: Powers Vercel ($1B+ valuation)
+- **Supabase**: Handles millions of users daily
+- **Vercel**: Serves 100B+ requests per month
+- **AWS Lambda**: Scales to any load automatically
+
+You don't need to master Docker to build serious software. You need to master solving customer problems.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Romeo is built by the community, for the community.
+We welcome contributions! Romeo proves that simple architectures enable faster development.
 
-### Ways to Contribute
+### Quick Contribution Guide:
+1. Fork the repo
+2. Create a feature branch
+3. Make your changes
+4. Test with `pnpm dev`
+5. Submit a PR
 
-- 🐛 **Report Bugs** - [Open an issue](https://github.com/your-org/romeo/issues)
-- 💡 **Feature Requests** - [Share your ideas](https://github.com/your-org/romeo/discussions)
-- 🔧 **Code Contributions** - [Submit a pull request](https://github.com/your-org/romeo/pulls)
-- 📚 **Documentation** - Help improve our docs
-- 🌍 **Community** - Join our [Discord community](https://discord.gg/romeo)
-
-### Development Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/your-org/romeo.git
-cd romeo
-
-# Install dependencies
-pnpm install
-
-# Set up environment
-cp docker.env.example .env
-
-# Start services
-pnpm dev
-```
+### Areas for Contribution:
+- 🎨 UI/UX improvements
+- 🔌 New integrations (Slack, Discord, etc.)
+- 🤖 AI enhancements
+- 📱 Mobile optimizations
+- 📚 Documentation
 
 ---
 
-## 🏢 Enterprise
+## 📞 Support & Community
 
-### Enterprise Features
-
-- **Priority Support** - Direct access to our engineering team
-- **Custom Integrations** - Built for your specific requirements  
-- **Advanced Security** - SOC 2, GDPR compliance assistance
-- **Dedicated Deployment** - Private cloud or on-premises installation
-- **Training & Onboarding** - Comprehensive team training
-
-### Get Enterprise Support
-
-For enterprise deployments, custom development, or support:
-
-- 📧 **Email**: enterprise@romeo.ai
-- 📅 **Schedule a Demo**: [calendly.com/romeo-enterprise](https://calendly.com/romeo-enterprise)
-- 💬 **Contact Sales**: [romeo.ai/enterprise](https://romeo.ai/enterprise)
+- **Discord**: [Join our community](https://discord.gg/romeo)
+- **GitHub**: [Open an issue](https://github.com/your-org/romeo/issues)  
+- **Email**: hello@romeo.ai
+- **Docs**: [Full documentation](https://docs.romeo.ai)
 
 ---
 
 ## 📄 License
 
-Romeo is open-source software licensed under the [MIT License](./LICENSE).
-
-```
-MIT License
-
-Copyright (c) 2024 Romeo Contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software...
-```
+MIT License - use it, modify it, ship it!
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 Built With
 
-Romeo is built with amazing open-source technologies:
-
-- **[Mastra](https://mastra.ai/)** - The TypeScript AI framework powering Romeo's intelligence
-- **[Next.js](https://nextjs.org/)** - React framework for the dashboard
-- **[Prisma](https://prisma.io/)** - Type-safe database toolkit
-- **[Fastify](https://fastify.io/)** - Fast and low overhead web framework
-- **[OpenAI](https://openai.com/)** - AI models for natural language processing
-
----
-
-## ⭐ Star History
-
-If Romeo helps your business, please consider giving us a star! ⭐
-
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/romeo&type=Date)](https://star-history.com/#your-org/romeo&Date)
+- **[Next.js](https://nextjs.org/)** - React framework
+- **[Supabase](https://supabase.com/)** - Database + Auth + Storage
+- **[OpenAI](https://openai.com/)** - AI models
+- **[Prisma](https://prisma.io/)** - Type-safe database access
+- **[SST](https://sst.dev/)** - Infrastructure as Code for AWS
+- **[Vercel](https://vercel.com/)** - Frontend deployment
+- **[Tailwind CSS](https://tailwindcss.com/)** - Styling
+- **[Radix UI](https://radix-ui.com/)** - Headless UI components
 
 ---
 
 <div align="center">
 
+**⭐ Star this repo if it helped you build without Docker complexity!**
+
 **[⬆ Back to Top](#romeo-)**
 
-Made with ❤️ by the Romeo community
+Made with ❤️ by developers who believe in simple solutions
 
-[Website](https://romeo.ai) • [Documentation](https://docs.romeo.ai) • [Discord](https://discord.gg/romeo) • [Twitter](https://twitter.com/romeo_ai)
+[Website](https://romeo.ai) • [Demo](https://demo.romeo.ai) • [Discord](https://discord.gg/romeo) • [Twitter](https://twitter.com/romeo_ai)
 
 </div>

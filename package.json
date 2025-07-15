@@ -1,12 +1,12 @@
 {
   "name": "romeo",
   "version": "1.0.0",
-  "description": "Open-source self-hostable TypeScript AI agent for customer service",
+  "description": "Open-source TypeScript AI agent for customer service - Modern Simple Stack",
   "private": true,
   "workspaces": [
-    "worker",
     "packages/*",
-    "web"
+    "web",
+    "backend"
   ],
   "scripts": {
     "dev": "turbo run dev",
@@ -14,11 +14,14 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "deploy": "sst deploy",
+    "deploy:prod": "sst deploy --stage production"
   },
   "devDependencies": {
     "turbo": "^1.10.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "sst": "3.0.0"
   },
   "engines": {
     "node": ">=18.0.0",
