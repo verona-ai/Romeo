@@ -31,26 +31,9 @@ Romeo is a production-ready AI customer service platform built with the **modern
 
 ## ✨ Why This Approach?
 
-<<<<<<< HEAD
 ### ⚡ Developer Experience First
 ```bash
 # Get started in minutes
-=======
-### ❌ The Old Way (Complex)
-
-```bash
-# Docker, Kubernetes, Terraform, custom networking...
-docker-compose up -d
-kubectl apply -f k8s/
-terraform plan && terraform apply
-# Hours of DevOps setup before writing a single line of business logic
-```
-
-### ✅ The New Way (Simple)
-
-```bash
-# Just code your features
->>>>>>> bacd6d8df110a6ab8cb8da6ea60d15155fe9acad
 pnpm install
 pnpm dev
 # Deploy with one command
@@ -58,18 +41,10 @@ vercel deploy
 sst deploy
 ```
 
-<<<<<<< HEAD
 ### 📈 Smart Scaling Strategy:
 - **1-1000 users**: Simple stack handles easily
 - **1000-10000 users**: Same stack, just paying more  
 - **10000+ users**: Scale infrastructure as needed (with revenue to support it)
-=======
-### Scale Reality Check:
-
-- **1-1000 users**: Simple stack handles easily
-- **1000-10000 users**: Same stack, just paying more
-- **10000+ users**: NOW you might need complex infrastructure (but you have revenue to hire help)
->>>>>>> bacd6d8df110a6ab8cb8da6ea60d15155fe9acad
 
 **Focus on building features that customers love, not infrastructure complexity.**
 
@@ -230,12 +205,7 @@ pnpm db:push              # Push schema to Supabase
 
 **Start Simple. Ship Fast. Scale When Needed.**
 
-<<<<<<< HEAD
 This project demonstrates the power of modern developer-friendly tools:
-=======
-This project proves that modern "simple" tools are actually premium:
-
->>>>>>> bacd6d8df110a6ab8cb8da6ea60d15155fe9acad
 - **Next.js**: Powers Vercel ($1B+ valuation)
 - **Supabase**: Handles millions of users daily
 - **Vercel**: Serves 100B+ requests per month
