@@ -1,0 +1,49 @@
+{
+  "name": "@romeo/slack",
+  "version": "1.0.0",
+  "description": "Slack Bot API integration for Romeo chat platform",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "keywords": [
+    "slack",
+    "slack-bot",
+    "chat",
+    "messaging",
+    "integration",
+    "ai",
+    "webhook",
+    "block-kit"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@romeo/core": "workspace:*",
+    "@slack/web-api": "^7.0.0",
+    "@slack/webhook": "^7.0.0",
+    "@slack/events-api": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@romeo/core": "^1.0.0"
+  }
+} 
